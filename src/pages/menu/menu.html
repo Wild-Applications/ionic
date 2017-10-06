@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{premises.name}}</ion-title>
+  </ion-navbar>
+  <ion-label text-center>{{table.name}}</ion-label>
+</ion-header>
+
+<ion-content>
+    <ion-tabs tabsPlacement="top" [ngClass]="{'bottom-margin': basket.contents.length != 0}">
+      <ion-tab *ngFor="let section of menu.contents" [root]="productListPage" [rootParams]="section.products" [tabTitle]="section.title"></ion-tab>
+    </ion-tabs>
+</ion-content>
+
+<ion-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState" [maxHeight]="getFooterHeight()" [ngClass]="{'hidden': basket.contents.length == 0}">
+  <ion-pullup-tab (tap)="toggleFooter()">
+    <h5 class="no-margin"><ion-icon name="arrow-up" *ngIf="footerState == 0"></ion-icon><ion-icon name="arrow-down" *ngIf="footerState == 1"></ion-icon></h5>
+  </ion-pullup-tab>
+  <ion-toolbar color="primary" (tap)="toggleFooter()">
+    <ion-title class="basket">Total £{{basket.subtotal || 00.00}}</ion-title>
+    <button *ngIf="footerState == 0" ion-button color="light" class="checkout" (tap)="toggleFooter(); $event.stopPropagation()">View Order</button>
+    <button *ngIf="footerState == 1" ion-button color="light" class="checkout" (tap)="checkout(); $event.stopPropagation()">Checkout</button>
+  </ion-toolbar>
+  <ion-content class="basket">
+    <ion-list>
+      <ion-item-sliding *ngFor="let product of basket.contents">
+        <ion-item>
+          <h2>{{product.quantity}}x {{product.product.name}}</h2>
+          <h3 item-end>£{{product.product.price}}</h3>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (tap)="remove(product.product)">
+            <ion-icon name="Remove"></ion-icon>
+            Remove
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-content>
+</ion-pullup>

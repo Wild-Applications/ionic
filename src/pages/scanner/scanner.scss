@@ -1,0 +1,19 @@
+page-scanner {
+
+}
+
+img.scanimg{
+  width: 80%;
+  border-radius: 50%;
+}
+
+ion-grid.scanner{
+  height: 100%;
+  justify-content: center;
+  margin-top: -50px;
+}
+
+ion-label.wrap{
+  text-overflow: unset;
+  white-space: unset;
+}

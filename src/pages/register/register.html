@@ -1,0 +1,61 @@
+<!--
+  Generated template for the CheckoutPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Sign Up</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form (ngSubmit)="register()">
+    <ion-list inset class="no-margin">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-12>
+            <ion-item [ngClass]="{'has-error': emailinput.errors?.email}">
+              <ion-label><ion-icon name="mail-outline"></ion-icon></ion-label>
+              <ion-input type="string" [(ngModel)]="email" name="Email" placeholder="Email" #emailinput="ngModel" email="false" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12>
+            <ion-item [ngClass]="{'has-error': passwordinput.errors?.required}">
+              <ion-label><ion-icon name="lock-outline"></ion-icon></ion-label>
+              <ion-input type="password" [(ngModel)]="password" name="password" placeholder="Password" #passwordinput="ngModel" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+
+
+    </ion-list>
+    <button ion-button type="submit" block>Sign Up</button>
+  </form>
+</ion-content>
+
+<!--
+<ion-row>
+  <ion-col col-7 class="no-padding">
+    <ion-item [ngClass]="{'has-error': expiry.errors?.email}">
+      <ion-label><ion-icon name="calendar-outline"></ion-icon></ion-label>
+      <ion-input type="string" [(ngModel)]="paymentDetails.expiry" name="expiry" placeholder="MM" required #expiry="ngModel"></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col col-5 class="no-padding">
+    <ion-item>
+      <ion-input type="string" [(ngModel)]="paymentDetails.year" name="year" placeholder="YY" required #year="ngModel"></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+-->

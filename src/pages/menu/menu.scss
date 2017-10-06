@@ -1,0 +1,58 @@
+@import "../../theme/variables";
+
+page-menu {
+
+}
+
+ion-pullup .footer ion-pullup-tab {
+  width: 40px;
+  border-radius: 40px 40px 0 0;
+}
+
+
+.checkout{
+  //background-color: darken(map-get($colors, primary),10%);
+  float: right;
+  border-radius: 40px;
+}
+
+.toolbar-content{
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+
+ion-content.basket{
+  background-color: lighten(map-get($colors, primary), 30%);
+}
+
+ion-title.basket{
+  padding-left: 16px;
+  .toolbar-title{
+    text-align: left;
+  }
+}
+
+ion-item-sliding{
+  background-color: transparent !important;
+  ion-item{
+    background-color: transparent !important;
+    border-bottom: none !important;
+  }
+}
+
+ion-footer{
+  transition: all 1s !important;
+  opacity: 1;
+}
+
+ion-pullup.hidden{
+  ion-footer{
+    bottom: -65px - 22px;
+    opacity: 0;
+  }
+}
+
+ion-tabs.bottom-margin{
+  margin-bottom: 44px;
+}

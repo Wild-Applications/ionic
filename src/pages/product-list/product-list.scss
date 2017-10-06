@@ -1,0 +1,62 @@
+@import "../../theme/variables";
+
+ion-modal.selectProduct .modal-wrapper {
+  position: absolute;
+  width: 90%;
+  height: 100%;
+  top: 25%;
+  left: 5%;
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+ion-modal.selectProduct .modal-container{
+  background-color: white;
+  border-radius: 15px;
+}
+
+@media not all and (min-height: 600px) and (min-width: 768px) {
+  ion-modal.selectProduct ion-backdrop {
+    visibility: visible;
+  }
+}
+
+.product-modal-header{
+  text-align: center;
+  margin-top: 1rem;
+}
+
+button.modal-button{
+  width:80%;
+  border-radius: 40px;
+}
+
+.center{
+  text-align: center;
+}
+
+
+.right {
+  text-align: right;
+}
+
+.left {
+  text-align: left;
+}
+
+.grey{
+  color: lighten(map-get($colors, dark), 50%);
+}
+
+.no-margin{
+  margin: 0px !important;
+}
+
+.no-padding-bottom{
+  padding-bottom: 0px;
+}
+
+.no-padding-top{
+  padding-top: 0px;
+}

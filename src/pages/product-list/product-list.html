@@ -1,0 +1,15 @@
+<ion-content padding>
+<ion-grid>
+  <ion-row *ngFor="let product of data; let i = index;" (tap)="productClicked(i)" align-items-center>
+    <ion-col col-11>
+      <ion-row>
+        <ion-col col-12 class="no-padding-bottom"><h5 class="no-margin">{{product.name}}</h5></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12 class="no-padding-top"><span class="grey">{{product.description}}</span></ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col col-1><h4 class="no-margin"><ion-icon name="arrow-forward" class="grey"></ion-icon></h4></ion-col>
+  </ion-row>
+</ion-grid>
+</ion-content>

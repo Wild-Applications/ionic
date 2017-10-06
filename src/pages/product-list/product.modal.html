@@ -1,0 +1,19 @@
+<ion-grid class="modal-container">
+  <ion-row justify-content-center>
+    <ion-col col-12 class="center"><h2 class="no-margin">{{product.name}}</h2></ion-col>
+  </ion-row>
+  <ion-row justify-content-center>
+    <ion-col col-12 class="center"><h6 class="grey no-margin">{{product.description}}</h6></ion-col>
+  </ion-row>
+  <ion-row justify-content-center>
+    <ion-col col-6 class="center"><h4 class="no-margin">£{{product.price}}</h4></ion-col>
+    <ion-col col-2 class="right"><h4 class="no-margin"><ion-icon name="remove-circle" class="grey" (click)="decrementQuantity()"></ion-icon></h4></ion-col>
+    <ion-col col-1 class="center"><h4 class="no-margin">{{quantity}}</h4></ion-col>
+    <ion-col col-2 class="left"><h4 class="no-margin"><ion-icon name="add-circle" class="grey" (click)="incrementQuantity()"></ion-icon></h4></ion-col>
+
+  </ion-row>
+  <ion-row justify-content-center>
+    <ion-col col-6 class="center"><button class="modal-button" ion-button outline (click)="cancel()">Cancel</button></ion-col>
+    <ion-col col-6 class="center"><button class="modal-button" ion-button (click)="add()">Add</button></ion-col>
+  </ion-row>
+</ion-grid>
