@@ -9,12 +9,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestService {
 
-  baseUrl: string = "http://api.wildapplications.com/mobile/webapp/";
+  baseUrl: string = "http://192.168.99.100:31126/mobile/webapp/";
   cache: any = {};
   currentUser: any;
 
   constructor( private http: Http, private storage: Storage ){
-    this.currentUser = this.jwt();
+
   }
 
   scanIn(tableId: string){
@@ -43,10 +43,17 @@ export class RestService {
         let token = response.json();
         if(token && token.token){
           this.storage.set('currentUser', token);
-          this.currentUser = this.jwt();
+          this.jwt(token);
         }
         return token;
       });
+  }
+
+  checkToken(){
+    return this.http.get(this.baseUrl + "token", this.currentUser)
+      .map((response: Response) => {
+        return response.json();
+      })
   }
 
   order(order:any){
@@ -57,14 +64,51 @@ export class RestService {
       })
   }
 
+  retrieveStoredPaymentMethods(){
+    return this.http.get(this.baseUrl + "payments/stored", this.currentUser)
+      .map((response: Response) => {
+        return response.json();
+      })
+  }
+
+  public authUser(){
+    return new Promise((resolve, reject) => {
+      this.storage.get('currentUser').then((currentUser) => {
+        if( currentUser ){
+          let headers = new Headers({ 'Authorization':'Bearer ' + currentUser.token});
+          this.currentUser = new RequestOptions({ headers: headers});
+          this.http.get(this.baseUrl + "token", this.currentUser)
+            .map((response: Response ) => {
+              return response.json();
+            })
+            .subscribe((data)=>{
+              //token is valid
+              resolve(null);
+            }, (error) => {
+              if(error.status == 401 || error.status == 400){
+                this.storage.remove('currentUser');
+                resolve(null);
+              }
+            })
+        }else{
+          resolve(null);
+        }
+      });
+    })
+  }
+
   //private helper methods
-  private jwt(): any {
-    this.storage.get('currentUser').then((currentUser) => {
-      if( currentUser ){
-        let headers = new Headers({ 'Authorization':'Bearer ' + currentUser.token});
-        this.currentUser = new RequestOptions({headers:headers});
-        return new RequestOptions({ headers: headers});
-      }
-    });
+  public jwt(token?: any): any {
+    if(token){
+      let headers = new Headers({ 'Authorization':'Bearer ' + token.token});
+      this.currentUser = new RequestOptions({ headers: headers});
+    }else{
+      this.storage.get('currentUser').then((currentUser) => {
+        if( currentUser ){
+          let headers = new Headers({ 'Authorization':'Bearer ' + currentUser.token});
+          this.currentUser = new RequestOptions({ headers: headers});
+        }
+      });
+    }
   }
 }

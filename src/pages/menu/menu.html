@@ -19,7 +19,7 @@
   <ion-toolbar color="primary" (tap)="toggleFooter()">
     <ion-title class="basket">Total £{{basket.subtotal || 00.00}}</ion-title>
     <button *ngIf="footerState == 0" ion-button color="light" class="checkout" (tap)="toggleFooter(); $event.stopPropagation()">View Order</button>
-    <button *ngIf="footerState == 1" ion-button color="light" class="checkout" (tap)="checkout(); $event.stopPropagation()">Checkout</button>
+    <button *ngIf="footerState == 1" ion-button color="light" class="checkout" (click)="checkout(); $event.stopPropagation()">Checkout</button>
   </ion-toolbar>
   <ion-content class="basket">
     <ion-list>

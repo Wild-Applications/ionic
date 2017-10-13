@@ -19,6 +19,7 @@ import { ProductListPage, ProductModal } from '../pages/product-list/product-lis
 import { CheckoutPage } from '../pages/checkout/checkout';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
+import { AddPaymentPage } from '../pages/add-payment/add-payment';
 
 import { RestService } from '../services/rest.service';
 import { CacheService } from '../services/cache.service';
@@ -35,7 +36,8 @@ import { BasketService } from '../services/basket.service';
     ProductModal,
     CheckoutPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    AddPaymentPage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ import { BasketService } from '../services/basket.service';
     ProductModal,
     CheckoutPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    AddPaymentPage
   ],
   providers: [
     StatusBar,

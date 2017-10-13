@@ -1,0 +1,72 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Payment</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form (ngSubmit)="addPayment()">
+
+    <ion-list inset class="no-margin">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-12>
+            <ion-item [ngClass]="{'has-error': number.errors?.creditCard}">
+              <ion-label><ion-icon name="card-outline"></ion-icon></ion-label>
+              <ion-input type="string" [(ngModel)]="paymentDetails.number" name="cardnumber" placeholder="Card Number" creditCard #number="ngModel" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-7>
+            <ion-item [ngClass]="{'has-error': !validExpiry}">
+              <ion-label><ion-icon name="calendar-outline"></ion-icon></ion-label>
+              <ion-datetime displayFormat="MM/YY" [(ngModel)]="paymentDetails.exp" name="exp" [min]="minYear" max="2025" placeholder="MM/YY" (ionChange)="validateExpiry()"></ion-datetime>
+            </ion-item>
+          </ion-col>
+          <ion-col col-5>
+            <ion-row>
+              <ion-item [ngClass]="{'has-error': cvc.errors?.digits}">
+                <ion-label><ion-icon name="lock-outline"></ion-icon></ion-label>
+                <ion-input type="string" [(ngModel)]="paymentDetails.cvc" name="cvc" placeholder="CVC" required #cvc="ngModel" digits maxlength="3"></ion-input>
+              </ion-item>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-12>
+            <ion-item>
+              <ion-label>Save card for later?</ion-label>
+              <ion-checkbox [(ngModel)]="saveForLater" name="save"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+
+
+
+
+    </ion-list>
+    <button ion-button type="submit" block>Add</button>
+  </form>
+</ion-content>
+
+<!--
+<ion-row>
+  <ion-col col-7 class="no-padding">
+    <ion-item [ngClass]="{'has-error': expiry.errors?.email}">
+      <ion-label><ion-icon name="calendar-outline"></ion-icon></ion-label>
+      <ion-input type="string" [(ngModel)]="paymentDetails.expiry" name="expiry" placeholder="MM" required #expiry="ngModel"></ion-input>
+    </ion-item>
+  </ion-col>
+  <ion-col col-5 class="no-padding">
+    <ion-item>
+      <ion-input type="string" [(ngModel)]="paymentDetails.year" name="year" placeholder="YY" required #year="ngModel"></ion-input>
+    </ion-item>
+  </ion-col>
+</ion-row>
+-->
