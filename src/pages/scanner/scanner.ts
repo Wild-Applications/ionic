@@ -31,6 +31,10 @@ export class ScannerPage {
       prompt: "Find the barcode on your table and scan in!",
       formats: "QR_CODE"
     };
+
+    if(this.cache.get('table') && this.cache.get('menu') && this.cache.get('premises')){
+      this.navToRoot();
+    }
   }
 
   ionViewDidLoad() {
@@ -45,7 +49,7 @@ export class ScannerPage {
       this.barcodeScanner.scan(this.options).then((barcodeData) => {
         this.scanIn(barcodeData.text);
       }, (err) => {
-          alert(err);
+          console.log(err);
       });
     }
   }
@@ -63,7 +67,10 @@ export class ScannerPage {
           this.navToRoot();
         },
         error => {
-          alert(error);
+          console.log(error);
+          if(error.status === 403){
+            alert(error.message);
+          }
         }
       );
   }

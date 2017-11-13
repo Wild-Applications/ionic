@@ -35,6 +35,9 @@ export class MenuPage {
 
   basket: any = {contents: []};
 
+  isLoggedInSub;
+  isLoggedIn: boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private restService: RestService, public loadingCtrl: LoadingController, private cache: CacheService, private basketService: BasketService, private alertController: AlertController, private modalController: ModalController, private storage: Storage) {
     //let loader = this.loadingCtrl.create({content:'Loading...'});
     //loader.present();
@@ -47,6 +50,14 @@ export class MenuPage {
     this.basketService.getBasket(function(data){
       self.basket = data;
     });
+
+    this.isLoggedInSub = restService.isLoggedIn.subscribe((value) => {
+      this.isLoggedIn = value;
+    });
+  }
+
+  ionViewWillLeave(){
+    this.isLoggedInSub.unsubscribe();
   }
 
   ionViewDidLoad() {
@@ -73,27 +84,34 @@ export class MenuPage {
         text: 'OK',
         handler: () => {
           //this.navCtrl.push(CheckoutPage);
-          this.cache.put("order", this.basket);
-          this.storage.get('currentUser').then((currentUser) => {
-            if(typeof currentUser == 'string'){
-              currentUser = JSON.parse(currentUser);
-            }
-
-            if( currentUser ){
-              //user already logged in so skip this screen
-              let checkoutModal = this.modalController.create(CheckoutPage);
-              checkoutModal.present();
-            }else{
-              let loginModal = this.modalController.create(LoginPage);
-              loginModal.present();
-            }
-          });
+          this.goToCheckout();
 
 
         }
       }]
     });
     alert.present();
+  }
+
+  goToCheckout(){
+    this.cache.put("order", this.basket);
+    if(!this.isLoggedIn){
+      let loginModal = this.modalController.create(LoginPage);
+      loginModal.onDidDismiss(data => {
+        if(data){
+          //logged in
+          let checkoutModal = this.modalController.create(CheckoutPage);
+          checkoutModal.present();
+        }else{
+          //didnt log in
+        }
+      });
+      loginModal.present();
+    }else{
+      //not logged in
+      let checkoutModal = this.modalController.create(CheckoutPage);
+      checkoutModal.present();
+    }
   }
 
   remove(product){

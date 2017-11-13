@@ -1,0 +1,65 @@
+<!--
+{
+          "_id": "59ca52ecb3356f00109f18a8",
+          "subtotal": 6.99,
+          "products": [
+              {
+                  "_id": "59c1430043a3a0000fc4d6b8",
+                  "name": "Rekorderlig",
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dictum auctor hendrerit.",
+                  "price": 6.99
+              }
+          ],
+          "table": {
+              "_id": "599ab8e70bbb0b000fffb7e9",
+              "name": "Table 1",
+              "owner": 0
+          },
+          "premises": {
+              "_id": "5995c1d98780ba0010aa04f8",
+              "name": "The Brickyard - Romford",
+              "description": "Lorem Ipsum"
+          },
+          "status": "COMPLETE",
+          "owner": 53,
+          "createdAt": "Tue Sep 26 2017 13:15:24 GMT+0000 (UTC)"
+      }
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle left>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Previous Orders</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid class="loader" *ngIf="loading">
+    <ion-row align-items-center justify-content-center>
+      <ion-col><ion-spinner></ion-spinner></ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list *ngIf="!loading">
+    <ion-item *ngFor="let order of orders" (click)="order.expanded=!order.expanded">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-8><h2 class="overflow-ellipsis bold">{{order.premises.name}}</h2></ion-col>
+          <ion-col col-4><h2 class="overflow-ellipsis bold" float-right>{{order.table.name}}</h2></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col><h3 class="overflow-ellipsis">{{order.createdAt | date:'shortTime'}} - {{order.createdAt | date}}</h3></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6><h3 class="overflow-ellipsis"><span class="bold">£{{order.subtotal}}</span> ({{order.products.length}} items)</h3></ion-col>
+        </ion-row>
+        <ion-row [hidden]="!order.expanded">
+          <ion-col col-12><h5 *ngFor="let product of order.products;">- {{product.name}}</h5></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

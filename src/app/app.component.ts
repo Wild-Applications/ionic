@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 
 import { ScannerPage } from '../pages/scanner/scanner';
+import { RootPage } from '../pages/root/root';
 import { MenuPage } from '../pages/menu/menu';
 
 import { HomePage } from '../pages/home/home';
@@ -15,7 +16,7 @@ import { RestService } from '../services/rest.service';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = ScannerPage;
+  rootPage:any = RootPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private restService: RestService, private storage: Storage) {
     platform.ready().then(() => {

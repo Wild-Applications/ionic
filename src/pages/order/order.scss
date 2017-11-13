@@ -1,0 +1,26 @@
+page-order {
+
+}
+
+.overflow-ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bold{
+  font-weight: bold !important;
+}
+
+ion-grid.loader{
+  height: 100%;
+}
+
+ion-grid.loader>ion-row{
+  height: 100%;
+  width: 100%;
+}
+
+ion-grid.loader>ion-row>ion-col{
+  text-align: center;
+}

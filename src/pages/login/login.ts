@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 
 import { RegisterPage } from '../register/register';
 import { CheckoutPage } from '../checkout/checkout';
+import { ScannerPage } from '../scanner/scanner';
 
 import { RestService } from '../../services/rest.service';
 
@@ -24,8 +25,14 @@ export class LoginPage {
   email: string;
   password: string;
 
+  returnPage: any = ScannerPage;
+
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, private storage: Storage, private restService: RestService, public loadingCtrl: LoadingController) {
     //check if current User Exists
+    var designatedReturnPage = navParams.get('returnPage');
+    if(designatedReturnPage){
+      this.returnPage = designatedReturnPage;
+    }
   }
 
   ionViewDidLoad() {
@@ -39,11 +46,12 @@ export class LoginPage {
       .subscribe(
         data => {
           loader.dismiss();
-          this.navCtrl.push(CheckoutPage, this.viewCtrl)
-          .then(()=>{
-            const index = this.viewCtrl.index;
-            this.navCtrl.remove(index);
-          });
+          this.viewCtrl.dismiss(true);
+          // this.navCtrl.push(this.returnPage, this.viewCtrl)
+          // .then(()=>{
+          //   const index = this.viewCtrl.index;
+          //   this.navCtrl.remove(index);
+          // });
         },
         error => {
           console.log(error);

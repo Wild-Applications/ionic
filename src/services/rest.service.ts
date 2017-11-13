@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs';
 
 import 'rxjs/add/operator/map';
@@ -9,9 +10,16 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestService {
 
-  baseUrl: string = "http://192.168.99.100:31126/mobile/webapp/";
+  //baseUrl: string = "http://192.168.99.100:31126/mobile/webapp/";
+  baseUrl: string = "https://api.wildapplications.com/mobile/webapp/";
   cache: any = {};
   currentUser: any;
+
+  loggedInOnLoad: boolean = false;
+  public isLoggedIn: Subject<boolean> = new BehaviorSubject<boolean>(this.loggedInOnLoad);
+
+  loggedInUser: any = {};
+  public userChange: Subject<any> = new BehaviorSubject<any>(this.loggedInUser);
 
   constructor( private http: Http, private storage: Storage ){
 
@@ -44,9 +52,22 @@ export class RestService {
         if(token && token.token){
           this.storage.set('currentUser', token);
           this.jwt(token);
+          this.isLoggedIn.next(true);
+          this.getUser()
+            .subscribe(data => {
+              this.userChange.next(data);
+            }, error => {
+              console.log(error);
+            })
         }
         return token;
       });
+  }
+
+  logout(){
+    this.storage.remove('currentUser');
+    this.currentUser = null;
+    this.isLoggedIn.next(false);
   }
 
   checkToken(){
@@ -71,6 +92,20 @@ export class RestService {
       })
   }
 
+  getOrders(){
+    return this.http.get(this.baseUrl + 'orders', this.currentUser)
+      .map((response: Response) => {
+        return response.json();
+      })
+  }
+
+  getUser(){
+    return this.http.get(this.baseUrl + 'user', this.currentUser)
+      .map((response: Response) => {
+        return response.json();
+      })
+  }
+
   public authUser(){
     return new Promise((resolve, reject) => {
       this.storage.get('currentUser').then((currentUser) => {
@@ -81,17 +116,31 @@ export class RestService {
             .map((response: Response ) => {
               return response.json();
             })
-            .subscribe((data)=>{
+            .subscribe((data) => {
               //token is valid
-              resolve(null);
+              this.loggedInOnLoad = true;
+              this.isLoggedIn.next(true);
+              this.getUser()
+                .subscribe(data => {
+                  this.loggedInUser = data;
+                  this.userChange.next(data);
+                }, error => {
+                  console.log(error);
+                })
+              resolve(true);
             }, (error) => {
               if(error.status == 401 || error.status == 400){
                 this.storage.remove('currentUser');
-                resolve(null);
+                this.isLoggedIn.next(false);
+                resolve(false);
+              }else{
+                this.isLoggedIn.next(false);
+                resolve(false);
               }
             })
         }else{
-          resolve(null);
+          this.isLoggedIn.next(false);
+          resolve(false);
         }
       });
     })

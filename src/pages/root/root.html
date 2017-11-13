@@ -1,0 +1,28 @@
+<ion-menu [content]="content">
+
+    <ion-content>
+        <ion-list>
+            <button ion-item menuClose (click)="openPage(scannerPage)">
+                View menu
+            </button>
+            <button ion-item menuClose (click)="openPage(ordersPage)">
+                Orders
+            </button>
+            <!--<button ion-item menuClose (click)="openPage(accountPage)">
+                My account
+            </button>-->
+        </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-list>
+        <button ion-item menuClose bottom (click)="scanOut()" *ngIf="scannedIn">
+            Scan out
+        </button>
+        <button ion-item menuClose bottom (click)="logout()" *ngIf="isLoggedIn">
+            Logout {{loggedInUser.email}}
+        </button>
+      </ion-list>
+    </ion-footer>
+</ion-menu>
+
+<ion-nav #content [root]="page"></ion-nav>
