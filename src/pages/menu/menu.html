@@ -6,7 +6,7 @@
     </button>
     <ion-title>{{premises.name}}</ion-title>
   </ion-navbar>
-  <ion-label text-center>{{table.name}}</ion-label>
+  <ion-label color="text" text-center>{{table.name}}</ion-label>
 </ion-header>
 
 <ion-content>
@@ -20,7 +20,7 @@
     <h5 class="no-margin"><ion-icon name="arrow-up" *ngIf="footerState == 0"></ion-icon><ion-icon name="arrow-down" *ngIf="footerState == 1"></ion-icon></h5>
   </ion-pullup-tab>
   <ion-toolbar color="primary" (tap)="toggleFooter()">
-    <ion-title class="basket">Total £{{basket.subtotal || 00.00}}</ion-title>
+    <ion-title class="basket">Total {{basket.subtotal | currency:'gbp':'symbol'}}</ion-title>
     <button *ngIf="footerState == 0" ion-button color="light" class="checkout" (tap)="toggleFooter(); $event.stopPropagation()">View Order</button>
     <button *ngIf="footerState == 1" ion-button color="light" class="checkout" (click)="checkout(); $event.stopPropagation()">Checkout</button>
   </ion-toolbar>
@@ -29,7 +29,7 @@
       <ion-item-sliding *ngFor="let product of basket.contents">
         <ion-item>
           <h2>{{product.quantity}}x {{product.product.name}}</h2>
-          <h3 item-end>£{{product.product.price}}</h3>
+          <h3 item-end>{{product.product.price | currency:'gbp':'symbol'}}</h3>
         </ion-item>
         <ion-item-options side="right">
           <button ion-button color="danger" (tap)="remove(product.product)">

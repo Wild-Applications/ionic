@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, AlertController } from 'ionic-angular';
 
 import { BasketService } from '../../services/basket.service';
 /**
@@ -18,7 +18,7 @@ export class ProductListPage {
 
   data: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private modalController: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalController: ModalController, private alertCtrl: AlertController) {
     this.data = this.navParams.data;
   }
 
@@ -27,8 +27,18 @@ export class ProductListPage {
   }
 
   productClicked(index){
-    let productModal = this.modalController.create(ProductModal, {product: this.data[index]}, {showBackdrop: true, cssClass: 'selectProduct'});
-    productModal.present();
+    if(this.data[index].in_stock){
+      let productModal = this.modalController.create(ProductModal, {product: this.data[index]}, {showBackdrop: true, cssClass: 'selectProduct'});
+      productModal.present();
+    }else{
+        //product is out of stock
+        let alert = this.alertCtrl.create({
+          title: 'Out Of Stock',
+          subTitle: 'We\'re sorry!\n This product is out of stock!',
+          buttons: ['OK']
+        });
+        alert.present();
+    }
   }
 
 }

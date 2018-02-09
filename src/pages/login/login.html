@@ -22,6 +22,11 @@
   <form (ngSubmit)="login()">
     <ion-list inset class="no-margin">
       <ion-grid>
+        <ion-row *ngIf="error">
+          <ion-col col-12>
+            <ion-label class="error center">{{error}}</ion-label>
+          </ion-col>
+        </ion-row>
         <ion-row>
           <ion-col col-12>
             <ion-item [ngClass]="{'has-error': emailinput.errors?.email}">
@@ -45,10 +50,10 @@
 
 
     </ion-list>
-    <button ion-button type="submit" block>Log in</button>
+    <button ion-button type="submit" [disabled]="emailinput.errors?.email || passwordinput.errors?.required" block class="curved">Log in</button>
   </form>
   <ion-label class="center">OR</ion-label>
-  <button ion-button (click)="signUp()" block>Sign Up</button>
+  <button ion-button (click)="signUp()" block class="curved">Sign Up</button>
 </ion-content>
 
 <!--

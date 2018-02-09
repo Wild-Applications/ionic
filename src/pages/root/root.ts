@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
 
 import { ScannerPage } from '../scanner/scanner';
 import { MenuPage } from '../menu/menu';
@@ -39,7 +39,7 @@ export class RootPage {
   loggedInUserSub;
   loggedInUser: any = {};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public cache: CacheService, public restService: RestService, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public cache: CacheService, public restService: RestService, private modalCtrl: ModalController, public events: Events) {
 
     this.scannedInSub = cache.tableChange.subscribe((value) => {
       this.scannedIn = value;
@@ -90,7 +90,19 @@ export class RootPage {
     this.cache.put('table', null);
     this.cache.put('premises', null);
     this.cache.put('menu', null);
-    this.page = this.scannerPage;
+    this.events.publish("scannedOut", null);
+  }
+
+  logout(){
+    this.restService.logout();
+  }
+
+  login(){
+    let loginModal = this.modalCtrl.create(LoginPage);
+    loginModal.onDidDismiss(data => {
+
+    });
+    loginModal.present();
   }
 
   getUser(){

@@ -43,6 +43,12 @@ export class MenuPage {
     //loader.present();
     this.table = this.cache.get('table');
     this.menu = this.cache.get('menu');
+    for(var i=0;i<this.menu.contents.length;i++){
+      if(this.menu.contents[i].products.length <= 0){
+        this.menu.contents.splice(i,1);
+        i--;
+      }
+    }
     this.premises = this.cache.get('premises');
 
     this.footerState = IonPullUpFooterState.Collapsed;
@@ -77,20 +83,32 @@ export class MenuPage {
   }
 
   checkout(){
-    let alert = this.alertController.create({
-      title: "ID Verification",
-      subTitle: "A valid form of identification will be required upon delivery of the drinks. Failure to provide will result in drinks being rejected and no refund will be issued.",
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          //this.navCtrl.push(CheckoutPage);
-          this.goToCheckout();
+    var needsId = false;
+    for(var i=0; i<this.basket.contents.length;i++){
+      if(this.basket.contents[i].product.age_restricted){
+        needsId = true;
+        break;
+      }
+    }
+    if(needsId){
+      let alert = this.alertController.create({
+        title: "ID Verification",
+        subTitle: "A valid form of identification will be required upon delivery of the drinks. Failure to provide will result in drinks being rejected and no refund will be issued.",
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            //this.navCtrl.push(CheckoutPage);
+            this.goToCheckout();
 
 
-        }
-      }]
-    });
-    alert.present();
+          }
+        }]
+      });
+      alert.present();
+    }else{
+      this.goToCheckout();
+    }
+
   }
 
   goToCheckout(){

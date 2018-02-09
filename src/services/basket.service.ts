@@ -53,13 +53,14 @@ export class BasketService {
     for(var i=0;i<this.basket.length;i++){
       if(this.basket[i]._id == product._id){
         this.basket.splice(i,1);
-        this.quantities[product._id] -= 1;
-        if(this.quantities[product._id] == 0){
-          delete this.quantities[product._id];
-        }
+        this.subtotal -= parseFloat(((product.price * this.quantities[product._id])).toFixed(2));
+        delete this.quantities[product._id];
+        //this.quantities[product._id] -= 1;
         break;
       }
     }
+
+    this.subtotal = parseFloat(this.subtotal.toFixed(2));
     this.emitBasket();
   }
 

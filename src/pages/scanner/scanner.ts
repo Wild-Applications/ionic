@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, LoadingController, AlertController, Events } from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
 
 import { MenuPage } from '../menu/menu';
@@ -22,7 +22,7 @@ export class ScannerPage {
 
   options: BarcodeScannerOptions;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private barcodeScanner: BarcodeScanner, private restService: RestService, private cache: CacheService, public platform: Platform, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private barcodeScanner: BarcodeScanner, private restService: RestService, private cache: CacheService, public platform: Platform, public loadingCtrl: LoadingController, private alertCtrl: AlertController, public events: Events) {
     this.options = {
       preferFrontCamera: false,
       showFlipCameraButton: false,
@@ -35,6 +35,14 @@ export class ScannerPage {
     if(this.cache.get('table') && this.cache.get('menu') && this.cache.get('premises')){
       this.navToRoot();
     }
+
+    events.subscribe('scannedOut', (data)=>{
+      console.log(this.navCtrl.getActive().component.name);
+      if(this.navCtrl.getActive().component.name == "MenuPage"){
+        this.navCtrl.push(ScannerPage);
+        this.navCtrl.remove(0,1,null);
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -69,7 +77,13 @@ export class ScannerPage {
         error => {
           console.log(error);
           if(error.status === 403){
-            alert(error.message);
+            loader.dismiss();
+            let alert = this.alertCtrl.create({
+              title: 'Closed',
+              subTitle: 'The premises you\'re trying to scan in to is currently closed! If you want to place an order please reach out to a member of staff',
+              buttons: ['OK']
+            });
+            alert.present();
           }
         }
       );

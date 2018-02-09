@@ -82,30 +82,51 @@ export class CheckoutPage {
 
       this.stripe.createCardToken(cardObj)
         .then(token => {
-          var toDisplay: any = {};
-          toDisplay.last4 = token.card.last4;
-          toDisplay.exp_month = token.card.exp_month;
-          toDisplay.exp_year = token.card.exp_year;
-          toDisplay.brand = token.card.brand;
-          toDisplay.source = token.id;
-          toDisplay.new = true;
-          toDisplay.saveForLater = paymentDetails.saveForLater;
-          var replaced = false;
+          var exists = false;
           for(var i=0;i<this.storedPaymentMethods.cards.length;i++){
-            if(this.storedPaymentMethods.cards[i].new){
-              this.storedPaymentMethods.cards[i] = toDisplay;
-              replaced = true;
-              break;
+
+            // if(this.storedPaymentMethods.cards.fingerprint == token.fingerprint){
+            //   exists = true;
+            // }
+          }
+
+          if(exists){
+            let alert = this.alertCtrl.create({
+              title: "Card already exists",
+              buttons: [
+                {text: 'Ok',
+                handler: () => {
+                  resolve();
+                }}
+              ]
+            });
+            alert.present();
+          }else{
+            var toDisplay: any = {};
+            toDisplay.last4 = token.card.last4;
+            toDisplay.exp_month = token.card.exp_month;
+            toDisplay.exp_year = token.card.exp_year;
+            toDisplay.brand = token.card.brand;
+            toDisplay.source = token.id;
+            toDisplay.new = true;
+            toDisplay.saveForLater = paymentDetails.saveForLater;
+            var replaced = false;
+            for(var i=0;i<this.storedPaymentMethods.cards.length;i++){
+              if(this.storedPaymentMethods.cards[i].new){
+                this.storedPaymentMethods.cards[i] = toDisplay;
+                replaced = true;
+                break;
+              }
             }
+            if(!replaced){
+              this.storedPaymentMethods.cards[this.storedPaymentMethods.cards.length] = toDisplay;
+            }
+            resolve();
           }
-          if(!replaced){
-            this.storedPaymentMethods.cards[this.storedPaymentMethods.cards.length] = toDisplay;
-          }
-          resolve();
         })
         .catch(error => {
           console.log(error);
-          resolve();
+          reject(error);
         });
 
    });

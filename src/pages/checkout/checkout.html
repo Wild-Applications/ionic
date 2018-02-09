@@ -23,11 +23,14 @@
     <ion-list-header>
       Cards
     </ion-list-header>
-    <ion-item *ngIf="loading"><ion-spinner></ion-spinner></ion-item>
+    <ion-item *ngIf="loading" text-center><ion-spinner></ion-spinner></ion-item>
     <ion-item *ngFor="let card of storedPaymentMethods.cards; let i = index;">
       <ion-label>
-        <ion-col col-6>{{card.brand}} - **** **** **** {{card.last4}}</ion-col>
-        <ion-col col-6>{{card.exp_month}}/{{card.exp_year}}</ion-col>
+        {{card.brand}} - {{card.last4}}
+
+      </ion-label>
+      <ion-label float-right text-right>
+        {{card.exp_month}}/{{card.exp_year}}
       </ion-label>
       <ion-radio [value]="card" checked></ion-radio>
     </ion-item>
@@ -37,6 +40,6 @@
       Add new payment method
     </ion-item>
 
-    <button ion-button type="submit" (click)="submitOrder()" block>Pay £{{order.subtotal}}</button>
+    <button ion-button type="submit" (click)="submitOrder()" class="curved" block>Pay £{{order.subtotal}}</button>
   </ion-list>
 </ion-content>

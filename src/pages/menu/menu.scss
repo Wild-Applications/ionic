@@ -23,7 +23,7 @@ ion-pullup .footer ion-pullup-tab {
 
 
 ion-content.basket{
-  background-color: lighten(map-get($colors, primary), 30%);
+  background-color: map-get($colors, tertiary);
 }
 
 ion-title.basket{

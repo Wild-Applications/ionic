@@ -25,6 +25,8 @@ export class LoginPage {
   email: string;
   password: string;
 
+  error: string;
+
   returnPage: any = ScannerPage;
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, private storage: Storage, private restService: RestService, public loadingCtrl: LoadingController) {
@@ -40,6 +42,7 @@ export class LoginPage {
   }
 
   login(){
+    this.error = undefined;
     let loader = this.loadingCtrl.create({});
     loader.present();
     this.restService.login(this.email, this.password)
@@ -54,7 +57,9 @@ export class LoginPage {
           // });
         },
         error => {
-          console.log(error);
+          loader.dismiss();
+          this.error = error['_body'].toString();
+          this.error = this.error.replace(/"/g,"");
         }
       );
   }

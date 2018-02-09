@@ -15,11 +15,14 @@
     </ion-content>
     <ion-footer>
       <ion-list>
-        <button ion-item menuClose bottom (click)="scanOut()" *ngIf="scannedIn">
+        <button ion-item bottom menuClose (click)="scanOut()" *ngIf="scannedIn">
             Scan out
         </button>
-        <button ion-item menuClose bottom (click)="logout()" *ngIf="isLoggedIn">
+        <button ion-item bottom (click)="logout()" *ngIf="isLoggedIn">
             Logout {{loggedInUser.email}}
+        </button>
+        <button ion-item bottom (click)="login()" *ngIf="!isLoggedIn">
+          Login
         </button>
       </ion-list>
     </ion-footer>
